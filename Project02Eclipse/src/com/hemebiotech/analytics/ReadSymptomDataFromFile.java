@@ -10,37 +10,37 @@ import java.util.List;
  * Simple brute force implementation
  *
  */
-public class ReadSymptomDataFromFile implements ISymptomReader {
+public class ReadSymptomDataFromFile implements ReadSymptomsData {
 
-	private String filepath;
+	private final String filepath;
 	
 	/**
 	 * 
 	 * @param filepath a full or partial path to file with symptom strings in it, one per line
 	 */
-	public ReadSymptomDataFromFile (String filepath) {
+	public ReadSymptomDataFromFile (String filepath) throws IOException {
+		if (filepath == null)
+			throw new IOException("The filepath cannot be null !");
 		this.filepath = filepath;
 	}
 	
 	@Override
-	public List<String> GetSymptoms() {
-		ArrayList<String> result = new ArrayList<String>();
-		
-		if (filepath != null) {
-			try {
-				BufferedReader reader = new BufferedReader (new FileReader(filepath));
-				String line = reader.readLine();
-				
-				while (line != null) {
-					result.add(line);
-					line = reader.readLine();
-				}
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+	public List<String> getSymptoms() {
+		ArrayList<String> result = new ArrayList<>();
+
+		try {
+			BufferedReader reader = new BufferedReader (new FileReader(filepath));
+			String line = reader.readLine();
+
+			while (line != null) {
+				result.add(line);
+				line = reader.readLine();
 			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
